@@ -1,6 +1,6 @@
 {
-  "name": "serverless-eks-fargate",
-  "version": "0.1.0",
+  "name": "eks-fargate-construct",
+  "version": "0.1.1",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
@@ -40,7 +40,7 @@
   },
   "license": "MIT",
   "repository": {
-    "url": "https://github.com/kangks/cdk-constructs.git"
+    "url": "https://github.com/kangks/cdk-constructs/tree/main/serverless-eks-fargate"
   },
   "stability": "stable",
   "jsii": {
