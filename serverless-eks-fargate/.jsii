@@ -156,7 +156,8 @@
   "jsiiVersion": "1.32.0 (build 3f4fe23)",
   "keywords": [
     "awscdk",
-    "cdk8s"
+    "cdk8s",
+    "cdk"
   ],
   "license": "MIT",
   "metadata": {
@@ -321,6 +322,6 @@
       ]
     }
   },
-  "version": "0.1.1",
-  "fingerprint": "CePKSpKW+g2rITGLgHg3qShKiRhxJHJ6mr9l8kl3Qyc="
+  "version": "1.0.0",
+  "fingerprint": "9FAcKF8OD05+8m2OIzyn6nCR3cXiLTmvivOfGl5KSA0="
 }
