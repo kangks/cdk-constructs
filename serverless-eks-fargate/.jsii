@@ -1,0 +1,326 @@
+{
+  "author": {
+    "email": "richard.kang@versent.com.sg",
+    "name": "Richard Kang",
+    "roles": [
+      "author"
+    ]
+  },
+  "bundled": {
+    "sync-request": "^6.1.0"
+  },
+  "dependencies": {
+    "@aws-cdk/core": "1.116.0",
+    "constructs": "^3.3.71"
+  },
+  "dependencyClosure": {
+    "@aws-cdk/cloud-assembly-schema": {
+      "targets": {
+        "dotnet": {
+          "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png",
+          "namespace": "Amazon.CDK.CloudAssembly.Schema",
+          "packageId": "Amazon.CDK.CloudAssembly.Schema"
+        },
+        "java": {
+          "maven": {
+            "artifactId": "cdk-cloud-assembly-schema",
+            "groupId": "software.amazon.awscdk"
+          },
+          "package": "software.amazon.awscdk.cloudassembly.schema"
+        },
+        "js": {
+          "npm": "@aws-cdk/cloud-assembly-schema"
+        },
+        "python": {
+          "classifiers": [
+            "Framework :: AWS CDK",
+            "Framework :: AWS CDK :: 1"
+          ],
+          "distName": "aws-cdk.cloud-assembly-schema",
+          "module": "aws_cdk.cloud_assembly_schema"
+        }
+      }
+    },
+    "@aws-cdk/core": {
+      "targets": {
+        "dotnet": {
+          "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png",
+          "namespace": "Amazon.CDK",
+          "packageId": "Amazon.CDK"
+        },
+        "java": {
+          "maven": {
+            "artifactId": "core",
+            "groupId": "software.amazon.awscdk"
+          },
+          "package": "software.amazon.awscdk.core"
+        },
+        "js": {
+          "npm": "@aws-cdk/core"
+        },
+        "python": {
+          "classifiers": [
+            "Framework :: AWS CDK",
+            "Framework :: AWS CDK :: 1"
+          ],
+          "distName": "aws-cdk.core",
+          "module": "aws_cdk.core"
+        }
+      }
+    },
+    "@aws-cdk/cx-api": {
+      "targets": {
+        "dotnet": {
+          "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png",
+          "namespace": "Amazon.CDK.CXAPI",
+          "packageId": "Amazon.CDK.CXAPI"
+        },
+        "java": {
+          "maven": {
+            "artifactId": "cdk-cx-api",
+            "groupId": "software.amazon.awscdk"
+          },
+          "package": "software.amazon.awscdk.cxapi"
+        },
+        "js": {
+          "npm": "@aws-cdk/cx-api"
+        },
+        "python": {
+          "classifiers": [
+            "Framework :: AWS CDK",
+            "Framework :: AWS CDK :: 1"
+          ],
+          "distName": "aws-cdk.cx-api",
+          "module": "aws_cdk.cx_api"
+        }
+      }
+    },
+    "@aws-cdk/region-info": {
+      "targets": {
+        "dotnet": {
+          "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png",
+          "namespace": "Amazon.CDK.RegionInfo",
+          "packageId": "Amazon.CDK.RegionInfo"
+        },
+        "java": {
+          "maven": {
+            "artifactId": "cdk-region-info",
+            "groupId": "software.amazon.awscdk"
+          },
+          "package": "software.amazon.awscdk.regioninfo"
+        },
+        "js": {
+          "npm": "@aws-cdk/region-info"
+        },
+        "python": {
+          "classifiers": [
+            "Framework :: AWS CDK",
+            "Framework :: AWS CDK :: 1"
+          ],
+          "distName": "aws-cdk.region-info",
+          "module": "aws_cdk.region_info"
+        }
+      }
+    },
+    "constructs": {
+      "targets": {
+        "dotnet": {
+          "namespace": "Constructs",
+          "packageId": "Constructs"
+        },
+        "go": {
+          "moduleName": "github.com/aws/constructs-go"
+        },
+        "java": {
+          "maven": {
+            "artifactId": "constructs",
+            "groupId": "software.constructs"
+          },
+          "package": "software.constructs"
+        },
+        "js": {
+          "npm": "constructs"
+        },
+        "python": {
+          "distName": "constructs",
+          "module": "constructs"
+        }
+      }
+    }
+  },
+  "description": "eks-fargate-construct",
+  "docs": {
+    "stability": "stable"
+  },
+  "homepage": "https://github.com/kangks/cdk-constructs/tree/main/serverless-eks-fargate",
+  "jsiiVersion": "1.32.0 (build 3f4fe23)",
+  "keywords": [
+    "awscdk",
+    "cdk8s"
+  ],
+  "license": "MIT",
+  "metadata": {
+    "jsii": {
+      "pacmak": {
+        "hasDefaultInterfaces": true
+      }
+    }
+  },
+  "name": "eks-fargate-construct",
+  "readme": {
+    "markdown": "# EKS Fargate Construct\n\nThe contruct will create\n* EKS Cluster\n* Fargate Profile\n* Build a local Docker image, and push to ECR\n* Deploy the image as application\n* Creates ALB using [AWS LoadBalancer Controller](https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/deploy/configurations/)\n\n## Deployment Diagram\n\n![EKS Fargate CDK Construct](images/EKS-Fargate%20CDK.png)\n"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kangks/cdk-constructs/tree/main/serverless-eks-fargate"
+  },
+  "schema": "jsii/0.10.0",
+  "targets": {
+    "js": {
+      "npm": "eks-fargate-construct"
+    },
+    "python": {
+      "distName": "cdk.eksfargate",
+      "module": "cdk.eksfargate"
+    }
+  },
+  "types": {
+    "eks-fargate-construct.ServerlessEksFargate": {
+      "assembly": "eks-fargate-construct",
+      "base": "@aws-cdk/core.Construct",
+      "docs": {
+        "stability": "stable"
+      },
+      "fqn": "eks-fargate-construct.ServerlessEksFargate",
+      "initializer": {
+        "docs": {
+          "stability": "stable"
+        },
+        "locationInModule": {
+          "filename": "lib/index.ts",
+          "line": 203
+        },
+        "parameters": [
+          {
+            "name": "scope",
+            "type": {
+              "fqn": "@aws-cdk/core.Construct"
+            }
+          },
+          {
+            "name": "id",
+            "type": {
+              "primitive": "string"
+            }
+          },
+          {
+            "name": "props",
+            "type": {
+              "fqn": "eks-fargate-construct.ServerlessEksFargateProps"
+            }
+          }
+        ]
+      },
+      "kind": "class",
+      "locationInModule": {
+        "filename": "lib/index.ts",
+        "line": 19
+      },
+      "name": "ServerlessEksFargate"
+    },
+    "eks-fargate-construct.ServerlessEksFargateProps": {
+      "assembly": "eks-fargate-construct",
+      "datatype": true,
+      "docs": {
+        "stability": "stable"
+      },
+      "fqn": "eks-fargate-construct.ServerlessEksFargateProps",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "lib/index.ts",
+        "line": 11
+      },
+      "name": "ServerlessEksFargateProps",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable"
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/index.ts",
+            "line": 15
+          },
+          "name": "appDockerFilename",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable"
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/index.ts",
+            "line": 14
+          },
+          "name": "appLocalFolder",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable"
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/index.ts",
+            "line": 16
+          },
+          "name": "appName",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable"
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/index.ts",
+            "line": 13
+          },
+          "name": "appPort",
+          "type": {
+            "primitive": "number"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable"
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/index.ts",
+            "line": 12
+          },
+          "name": "clusterName",
+          "optional": true,
+          "type": {
+            "primitive": "string"
+          }
+        }
+      ]
+    }
+  },
+  "version": "0.1.1",
+  "fingerprint": "CePKSpKW+g2rITGLgHg3qShKiRhxJHJ6mr9l8kl3Qyc="
+}

@@ -1,4 +1,4 @@
-import { expect as expectCDK, countResources, haveResource, haveResourceLike, arrayWith, stringLike, anything, objectLike } from '@aws-cdk/assert';
+import { expect as expectCDK, countResources, haveResource, stringLike } from '@aws-cdk/assert';
 import * as cdk from '@aws-cdk/core';
 import * as ServerlessEksFargate from '../lib/index';
 import * as path from 'path';
