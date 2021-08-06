@@ -9,4 +9,4 @@ The contruct will create
 
 ## Deployment Diagram
 
-![EKS Fargate CDK Construct](images/EKS-Fargate%20CDK.png)
+![EKS Fargate CDK Construct](https://raw.githubusercontent.com/kangks/cdk-constructs/main/serverless-eks-fargate/images/EKS-Fargate%20CDK.png)
