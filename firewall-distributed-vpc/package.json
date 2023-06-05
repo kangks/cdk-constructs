@@ -33,5 +33,16 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/kangks/cdk-constructs/tree/main/firewall-distributed-vpc"
-  }
+  },
+  "jsii": {
+    "outdir": "dist",
+    "versionFormat": "full",
+    "targets": {
+      "python": {
+        "distName": "cdk.eksfargate",
+        "module": "cdk.eksfargate"
+      }
+    }
+  },
+  "stability": "stable"
 }
