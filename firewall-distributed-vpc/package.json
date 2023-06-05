@@ -1,5 +1,5 @@
 {
-  "name": "cdk-construct-network-firewall-distributed",
+  "name": "cdk-construct-network-firewall-textfile-rules",
   "version": "0.1.1",
   "main": "lib/NetworkFirewallDistributedConstruct.js",
   "types": "lib/NetworkFirewallDistributedConstruct.d.ts",
