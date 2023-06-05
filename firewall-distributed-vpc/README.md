@@ -43,6 +43,16 @@ new NetworkFirewallStack(app, 'NetworkFirewallStack', {
 });
 ```
 
+4. Create a Suricata text file in `lib/rules.txt` as below. More examples can be found in https://suricata.readthedocs.io/en/suricata-6.0.2/rules/intro.html
+
+```
+pass ip 10.1.0.0/16 any -> 10.0.0.0/16 any (sid:100;)
+drop ip any any <> any any (sid:101;)
+alert tcp any any -> 1.1.1.1/32 80 (sid:102;msg:"example message";)
+drop tls $HOME_NET any -> $EXTERNAL_NET any (tls.sni; content:"example.com"; startswith; nocase; endswith; msg:"matching TLS denylisted FQDNs"; priority:1; flow:to_server, established; sid:103; rev:1;)
+drop http $HOME_NET any -> $EXTERNAL_NET any (http.host; content:"example.com"; startswith; endswith; msg:"matching HTTP denylisted FQDNs"; priority:1; flow:to_server, established; sid:104; rev:1;)
+```
+
 3. In the `lib/network-firewall-stack.ts`
 ```
 import * as cdk from 'aws-cdk-lib';
@@ -52,15 +62,21 @@ import * as fwconstruct from '../../cdk-constructs/firewall-distributed-vpc'
 export class NetworkFirewallStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
-    const vpc:cdk.aws_ec2.IVpc = cdk.aws_ec2.Vpc.fromLookup(this,"staging_vpc",{
+    const vpc:cdk.aws_ec2.IVpc = cdk.aws_ec2.Vpc.fromLookup(this,"fwVpc",
+    {
       vpcId: <your VPC ID>
-    })
+    });
+
+    const subnet = [
+      cdk.aws_ec2.Subnet.fromSubnetId(this, "subnet1", <subnet 1>),
+      cdk.aws_ec2.Subnet.fromSubnetId(this, "subnet2", <subnet 2>)
+    ]
+
 
     new fwconstruct.FirewallDistributedVpc(this,'fw',{
       vpc: vpc,
-      subnetList:[
-        {subnetId: <the subnet ID>}
-      ]
+      subnetList: subnet,
+      rulesFile: ["./lib/rules.txt"]
     })
   
   }
