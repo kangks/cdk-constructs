@@ -1,6 +1,8 @@
 # AWS Firewall Construct
 
-A simple AWS VPC Firewall with one stateless rule and one stateful rule to meet the AWS Config Network Firewall Conformance
+A simple AWS VPC Firewall with one stateless rule and one stateful rule to meet the AWS Config Network Firewall Conformance. 
+
+Stateful rules group can be further extend with Suricata rules as text file
 
 ## Stateless rule group
 
