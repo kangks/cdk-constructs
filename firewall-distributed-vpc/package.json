@@ -1,6 +1,6 @@
 {
-  "name": "cdk-construct-network-firewall-textfile-rules",
-  "version": "0.1.1",
+  "name": "@richard.kang/cdk-construct-network-firewall-textfile-rules",
+  "version": "0.1.0",
   "main": "lib/NetworkFirewallDistributedConstruct.js",
   "types": "lib/NetworkFirewallDistributedConstruct.d.ts",
   "scripts": {
@@ -33,5 +33,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/kangks/cdk-constructs/tree/main/firewall-distributed-vpc"
-  }  
+  }
 }
