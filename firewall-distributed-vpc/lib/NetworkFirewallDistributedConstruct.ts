@@ -4,17 +4,17 @@ import { Construct } from 'constructs';
 import * as fs from 'fs';
 import * as path from 'path';
 
-export interface FirewallDistributedVpcProps {
+export interface NetworkFirewallDistributedConstructProps {
   vpc: cdk.aws_ec2.IVpc;
   subnetList: Array<cdk.aws_ec2.ISubnet>;
   rulesFile?: Array<fs.PathOrFileDescriptor>;
 }
 
-export class FirewallDistributedVpc extends Construct {
+export class NetworkFirewallDistributedConstruct extends Construct {
 
   private vpc: cdk.aws_ec2.IVpc;
 
-  constructor(scope: Construct, id: string, props: FirewallDistributedVpcProps) {
+  constructor(scope: Construct, id: string, props: NetworkFirewallDistributedConstructProps) {
     super(scope, id);
 
     this.vpc = props.vpc;

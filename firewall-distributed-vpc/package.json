@@ -1,8 +1,8 @@
 {
-  "name": "firewall-distributed-vpc",
-  "version": "0.1.0",
-  "main": "lib/FirewallDistributedVpcConstruct.js",
-  "types": "lib/FirewallDistributedVpcConstruct.d.ts",
+  "name": "cdk-construct-network-firewall-distributed",
+  "version": "0.1.1",
+  "main": "lib/NetworkFirewallDistributedConstruct.js",
+  "types": "lib/NetworkFirewallDistributedConstruct.d.ts",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
@@ -33,8 +33,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/kangks/cdk-constructs/tree/main/firewall-distributed-vpc"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
   }  
 }
