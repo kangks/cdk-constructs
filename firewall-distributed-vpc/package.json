@@ -24,5 +24,17 @@
   "keywords": [
     "awscdk",
     "cdk"
-  ]
+  ],
+  "author": {
+    "name": "Richard Kang",
+    "email": "richard@doit-intl.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kangks/cdk-constructs/tree/main/firewall-distributed-vpc"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }  
 }
