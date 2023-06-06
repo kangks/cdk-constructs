@@ -4,17 +4,18 @@ import { Construct } from 'constructs';
 import * as fs from 'fs';
 import * as path from 'path';
 
-export interface NetworkFirewallDistributedConstructProps {
-  vpc: cdk.aws_ec2.IVpc;
-  subnetList: Array<cdk.aws_ec2.ISubnet>;
-  rulesFile?: Array<fs.PathOrFileDescriptor>;
+export interface INetworkFirewallDistributedConstructProps {
+  readonly vpc: cdk.aws_ec2.IVpc;
+  readonly subnetList: Array<cdk.aws_ec2.ISubnet>;
+  readonly rulesFile?: Array<string>;
 }
 
 export class NetworkFirewallDistributedConstruct extends Construct {
 
   private vpc: cdk.aws_ec2.IVpc;
+  public readonly firewall: CfnFirewall;
 
-  constructor(scope: Construct, id: string, props: NetworkFirewallDistributedConstructProps) {
+  constructor(scope: Construct, id: string, props: INetworkFirewallDistributedConstructProps) {
     super(scope, id);
 
     this.vpc = props.vpc;
@@ -125,10 +126,12 @@ export class NetworkFirewallDistributedConstruct extends Construct {
       }
     );
 
+    const getHomeNet = () => this.vpc.vpcCidrBlock;
+
     const rulesVariable: CfnRuleGroup.RuleVariablesProperty = {
       ipSets: {
         HOME_NET: {
-          definition: [this.getHomeNet()],
+          definition: [getHomeNet()],
         },
         EXTERNAL_NET: {
           definition: ['0.0.0.0/0'],
@@ -137,7 +140,7 @@ export class NetworkFirewallDistributedConstruct extends Construct {
     }
 
     if(props.rulesFile){
-      const rulesFromFile:Array<CfnRuleGroup> = this.getRulesSourcePropertyFromFile(props.rulesFile, rulesVariable);
+      const rulesFromFile:Array<CfnRuleGroup> = this.buildRulesSourcePropertyFromFile(props.rulesFile, rulesVariable);
       for(let index=0; index<rulesFromFile.length; index++){
         statefulRuleGroups.push({    
           resourceArn:       
@@ -146,21 +149,6 @@ export class NetworkFirewallDistributedConstruct extends Construct {
         )
       }    
     };
-
-    const rulesFromFileGroupReference = new cdk.aws_networkfirewall.CfnRuleGroup(this, 'rulesFromFile', {
-      capacity: 1000,
-      ruleGroupName: 'rulesFromFile',
-      type: 'STATEFUL',
-      ruleGroup: {
-        rulesSource: {
-          rulesSourceList: {
-            generatedRulesType: 'ALLOWLIST',
-            targets: listdomains,
-            targetTypes: ['TLS_SNI', 'HTTP_HOST'],
-          },
-        },
-      },
-    });          
 
     const fw_policy = new cdk.aws_networkfirewall.CfnFirewallPolicy(this, 'fw_policy', {
       firewallPolicyName: 'network-firewall-policy',
@@ -182,7 +170,7 @@ export class NetworkFirewallDistributedConstruct extends Construct {
       }
     )
 
-    const firewall = new cdk.aws_networkfirewall.CfnFirewall(this, 'network-firewall', {
+    this.firewall = new cdk.aws_networkfirewall.CfnFirewall(this, 'network-firewall', {
       firewallName: 'network-firewall',
       firewallPolicyArn: fw_policy.attrFirewallPolicyArn,
       subnetMappings: subnetList,
@@ -195,13 +183,7 @@ export class NetworkFirewallDistributedConstruct extends Construct {
 
   }
 
-  getHomeNet(): string{
-    const homeNet = this.vpc.vpcCidrBlock;
-    console.log("homeNet", homeNet);
-    return homeNet;
-  }
-
-  getRulesSourcePropertyFromFile(filenameList:Array<fs.PathOrFileDescriptor>, rulesVariable:CfnRuleGroup.RuleVariablesProperty):Array<CfnRuleGroup>{
+  buildRulesSourcePropertyFromFile(filenameList:Array<string>, rulesVariable:CfnRuleGroup.RuleVariablesProperty):Array<CfnRuleGroup>{
 
     const rulesSource:Array<CfnRuleGroup> = [];
 

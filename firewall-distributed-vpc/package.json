@@ -1,5 +1,5 @@
 {
-  "name": "@richard.kang/cdk-construct-network-firewall-textfile-rules",
+  "name": "@richkang/cdk-construct-network-firewall-textfile-rules",
   "version": "0.1.2",
   "main": "lib/NetworkFirewallDistributedConstruct.js",
   "types": "lib/NetworkFirewallDistributedConstruct.d.ts",
@@ -8,7 +8,7 @@
     "test": "jest",
     "build": "jsii",
     "build:watch": "jsii --watch",
-    "package": "jsii-pacmak"    
+    "package": "jsii-pacmak"
   },
   "devDependencies": {
     "@types/jest": "^29.5.1",
@@ -43,8 +43,8 @@
     "versionFormat": "full",
     "targets": {
       "python": {
-        "distName": "cdk.eksfargate",
-        "module": "cdk.eksfargate"
+        "distName": "cdk.networkfirewalldistributed",
+        "module": "cdk.networkfirewalldistributed"
       }
     }
   },
