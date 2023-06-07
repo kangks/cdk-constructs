@@ -3480,7 +3480,7 @@
   },
   "name": "@richkang/cdk-construct-transfer-sftp-s3-kms",
   "readme": {
-    "markdown": "# AWS Transfer SFTP host backed by KMS encrpyted S3 bucket\n\nA CDK construct to create a Transfer Family SFTP host backed by a KMS encrypted S3 bucket\n\n# Example use case\n\n"
+    "markdown": "# AWS Transfer SFTP host backed by KMS encrpyted S3 bucket\n\nA CDK construct to create a Transfer Family SFTP host backed by a KMS encrypted S3 bucket, and a SFTP user\n\nOptionally, `AwsTransferSFTPUserConstruct` can be used separately to create new SFTP user by passing in the existing SFTP server id\n\n```\nnew AwsTransferSFTPUserConstruct(this, \"sftpUser2\", {\n    sftpServer: <existing SFTP server id>,\n    kmsKey: <existing kmsKey that the new SFTP user need to be granted the key access>,\n    s3Bucket: <eixsting s3bucket>\n})\n```\n\n# Example use case\n\n1. Create a folder, `mkdir aws-sftp`\n1. Initialize a CDK app `cdk init app --language typescript`\n1. Add the dependency to `@richkang/cdk-construct-transfer-sftp-s3-kms` with command `npm i --save @richkang/cdk-construct-transfer-sftp-s3-kms`\n1. In the `bin/aws-sftp.ts`, pass in the `region` and `account` as `env`:\n\n```\n#!/usr/bin/env node\nimport 'source-map-support/register';\nimport * as cdk from 'aws-cdk-lib';\nimport { AwsSftpStack } from '../lib/aws-sftp-stack';\n\nconst app = new cdk.App();\nnew AwsSftpStack(app, 'AwsSftpStack', {\n  env: {\n    region: process.env.CDK_DEFAULT_REGION,\n    account: process.env.CDK_DEFAULT_ACCOUNT,\n  },\n\n});\n```\n1. In the `lib/aws-sftp-stack.ts`\n\n```\nimport * as cdk from 'aws-cdk-lib';\nimport { Construct } from 'constructs';\nimport * as sftp from \"@richkang/cdk-construct-transfer-sftp-s3-kms\";\n\nexport class AwsSftpCdk2Stack extends cdk.Stack {\n  constructor(scope: Construct, id: string, props: cdk.StackProps) {\n    super(scope, id, props);\n\n    new sftp.AwsTransferSFTPUserConstruct(this, \"sftpUser\", {\n      userName: \"richard\",\n      env: props.env\n    })\n  }\n}\n```"
   },
   "repository": {
     "type": "git",
@@ -3776,5 +3776,5 @@
     }
   },
   "version": "0.1.0",
-  "fingerprint": "Fave23Jgy4ji3Q1wz/Toj7T8QsrNkZ9GcolHNxeLTyg="
+  "fingerprint": "qJsZQmLM5gdu282Vvg5FUAmUdXlgbGM8um/GT0agOnY="
 }

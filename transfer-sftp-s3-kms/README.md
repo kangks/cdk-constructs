@@ -52,3 +52,10 @@ export class AwsSftpCdk2Stack extends cdk.Stack {
   }
 }
 ```
+
+1. Once `cdk deploy` successful, update the SFTP user public key with the output from the `cdk deploy`, such as
+
+```
+Outputs:
+AwsSftpCdk2Stack.sftpUsersftpUserOutputD6611E91 = aws transfer import-ssh-public-key --server-id s-022a52dd12e741258 --user-name <sftp user name> --ssh-public-key-body <ssh public key body>
+```

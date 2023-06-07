@@ -1,6 +1,6 @@
 {
   "name": "@richkang/cdk-construct-transfer-sftp-s3-kms",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "lib/AwsTransferSFTPConstruct.js",
   "types": "lib/AwsTransferSFTPConstruct.d.ts",
   "scripts": {
