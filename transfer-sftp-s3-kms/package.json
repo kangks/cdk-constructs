@@ -14,7 +14,7 @@
     "@types/jest": "^29.5.2",
     "@types/node": "^20.2.5",
     "aws-cdk-lib": "2.82.0",
-    "constructs": "^10.0.0",
+    "constructs": "10.0.0",
     "jest": "^29.5.0",
     "jsii": "^5.1.1",
     "jsii-pacmak": "^1.83.0",
@@ -23,7 +23,7 @@
   },
   "peerDependencies": {
     "aws-cdk-lib": "2.82.0",
-    "constructs": "^10.0.0"
+    "constructs": "10.0.0"
   },
   "keywords": [
     "awscdk",
@@ -41,6 +41,12 @@
   "stability": "stable",
   "jsii": {
     "outdir": "dist",
-    "versionFormat": "full"
+    "versionFormat": "full",
+    "targets": {
+      "python": {
+        "distName": "cdk.sftpKmsS3",
+        "module": "cdk.sftpKmsS3"
+      }
+    }
   }
 }

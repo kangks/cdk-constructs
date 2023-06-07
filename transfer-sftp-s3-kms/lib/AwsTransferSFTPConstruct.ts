@@ -88,7 +88,7 @@ export class AwsTransferSFTPUserConstruct extends Construct {
 
     const sftpHomePolicy = new cdk.aws_iam.Policy(this, "sftpHomePolicy",
     {
-      policyName: "sftpHomePolicy",
+      policyName: `sftpHomePolicy-${id}`,
       document: new cdk.aws_iam.PolicyDocument({
         statements: [
           new cdk.aws_iam.PolicyStatement({
@@ -130,7 +130,7 @@ export class AwsTransferSFTPUserConstruct extends Construct {
     });
 
     const sftpUserRole = new cdk.aws_iam.Role(this, 'Role', {
-      roleName: "sftpHomeRole",
+      roleName: `sftpHomeRole-${id}`,
       assumedBy: new cdk.aws_iam.ServicePrincipal("transfer.amazonaws.com"),
       description: 'sftp User Role with RW to s3 bucket',
     })

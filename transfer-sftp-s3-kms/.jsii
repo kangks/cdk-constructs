@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "aws-cdk-lib": "2.82.0",
-    "constructs": "^10.0.0"
+    "constructs": "10.0.0"
   },
   "dependencyClosure": {
     "@aws-cdk/asset-awscli-v1": {
@@ -3480,7 +3480,7 @@
   },
   "name": "@richkang/cdk-construct-transfer-sftp-s3-kms",
   "readme": {
-    "markdown": "# Welcome to your CDK TypeScript Construct Library project\n\nYou should explore the contents of this project. It demonstrates a CDK Construct Library that includes a construct (`TransferTftpS3`)\nwhich contains an Amazon SQS queue that is subscribed to an Amazon SNS topic.\n\nThe construct defines an interface (`TransferTftpS3Props`) to configure the visibility timeout of the queue.\n\n## Useful commands\n\n* `npm run build`   compile typescript to js\n* `npm run watch`   watch for changes and compile\n* `npm run test`    perform the jest unit tests\n"
+    "markdown": "# AWS Transfer SFTP host backed by KMS encrpyted S3 bucket\n\nA CDK construct to create a Transfer Family SFTP host backed by a KMS encrypted S3 bucket\n\n# Example use case\n\n"
   },
   "repository": {
     "type": "git",
@@ -3490,6 +3490,10 @@
   "targets": {
     "js": {
       "npm": "@richkang/cdk-construct-transfer-sftp-s3-kms"
+    },
+    "python": {
+      "distName": "cdk.sftpKmsS3",
+      "module": "cdk.sftpKmsS3"
     }
   },
   "types": {
@@ -3772,5 +3776,5 @@
     }
   },
   "version": "0.1.0",
-  "fingerprint": "zU2sTfwda7pWj6mKCwNkL+REfq46OHHYGjli0iF96Ps="
+  "fingerprint": "Fave23Jgy4ji3Q1wz/Toj7T8QsrNkZ9GcolHNxeLTyg="
 }
