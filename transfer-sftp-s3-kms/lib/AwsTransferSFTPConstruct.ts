@@ -83,7 +83,7 @@ export class AwsTransferSFTPUserConstruct extends Construct {
     super(scope, id);
 
     const sftpServer = props.sftpServer ?? new AwsTransferSFTPConstruct(this, "sftpHost").sftpServer;
-    const kmsKey = props.kmsKey ?? this.createKmsKey();
+    const kmsKey = props.kmsKey ?? this.createKmsKey(id);
     const s3Bucket = props.s3Bucket ?? this.createEncryptedS3Bucket(kmsKey, `${props.env.account}-${props.env.region}-sftp-${id}`.toLowerCase());
 
     const sftpHomePolicy = new cdk.aws_iam.Policy(this, "sftpHomePolicy",
@@ -166,13 +166,13 @@ export class AwsTransferSFTPUserConstruct extends Construct {
 
   }
 
-  createKmsKey(){
-    return new cdk.aws_kms.Key(this, 'sftp-kms-key', {
+  createKmsKey(id: string){
+    return new cdk.aws_kms.Key(this, `sftp-kms-key-${id}`, {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       pendingWindow: cdk.Duration.days(7),
-      alias: 'alias/sftp-kms-key',
+      alias: `alias/sftp-kms-key-${id}`,
       description: 'KMS key for encrypting the objects in an S3 bucket',
-      enableKeyRotation: false,
+      enableKeyRotation: true,
     });
   }
 
