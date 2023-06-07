@@ -1,23 +1,23 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 
-export interface AwsTransferSFTPConstructProps {
-  vpc?: cdk.aws_ec2.IVpc;
+export interface IAwsTransferSFTPConstructProps {
+  readonly vpc?: cdk.aws_ec2.IVpc;
 }
 
-export interface AwsTransferSFTPUseerConstructProps {
-  sftpServer?: cdk.aws_transfer.CfnServer,
-  userName: string,
-  s3Bucket?: cdk.aws_s3.IBucket,
-  kmsKey?: cdk.aws_kms.IKey;
-  env: any,
+export interface IAwsTransferSFTPUseerConstructProps {
+  readonly sftpServer?: cdk.aws_transfer.CfnServer,
+  readonly userName: string,
+  readonly s3Bucket?: cdk.aws_s3.IBucket,
+  readonly kmsKey?: cdk.aws_kms.IKey;
+  readonly env: any,
 }
 
 export class AwsTransferSFTPConstruct extends Construct {
 
   readonly sftpServer: cdk.aws_transfer.CfnServer;
 
-  constructor(scope: Construct, id: string, props: AwsTransferSFTPConstructProps = {}) {
+  constructor(scope: Construct, id: string, props: IAwsTransferSFTPConstructProps = {}) {
     super(scope, id);
 
     const vpc = props.vpc ?? this.createVpc(id);
@@ -79,7 +79,7 @@ export class AwsTransferSFTPConstruct extends Construct {
 
 export class AwsTransferSFTPUserConstruct extends Construct {
 
-  constructor(scope: Construct, id: string, props: AwsTransferSFTPUseerConstructProps) {
+  constructor(scope: Construct, id: string, props: IAwsTransferSFTPUseerConstructProps) {
     super(scope, id);
 
     const sftpServer = props.sftpServer ?? new AwsTransferSFTPConstruct(this, "sftpHost").sftpServer;
@@ -136,27 +136,6 @@ export class AwsTransferSFTPUserConstruct extends Construct {
     })
     sftpUserRole.attachInlinePolicy(sftpHomePolicy);
 
-    const userSessionPolicy = 
-    {
-      "Version": "2012-10-17",
-      "Statement": [
-          {
-              "Sid": "HomeDirObjectAccess",
-              "Effect": "Allow",
-              "Action": [
-                  "s3:PutObject",
-                  "s3:GetObject",
-                  "s3:DeleteObjectVersion",
-                  "s3:DeleteObject",
-                  "s3:GetObjectVersion",
-                  "s3:GetObjectACL",
-                  "s3:PutObjectACL"
-              ],
-              "Resource": "arn:aws:s3:::${transfer:HomeDirectory}*"
-           }
-      ]
-    };
-
     const homeDirectory = `/${s3Bucket.bucketName}/${props.userName}`;
 
     const cfnUser = new cdk.aws_transfer.CfnUser(this, 'sftpServerUser', {
@@ -177,7 +156,13 @@ export class AwsTransferSFTPUserConstruct extends Construct {
         key: 'system',
         value: 'data',
       }],
-    });    
+    });
+
+    
+    new cdk.CfnOutput(this, "sftpUserOutput", {
+      description: "AWS CLI to update SSH public key for user",
+      value: `aws transfer import-ssh-public-key --server-id ${cfnUser.attrServerId} --user-name ${cfnUser.attrUserName} --ssh-public-key-body <ssh public key body>`
+    })
 
   }
 
