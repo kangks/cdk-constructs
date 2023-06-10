@@ -1,5 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
-import { CfnFirewall, CfnRuleGroup } from 'aws-cdk-lib/aws-networkfirewall';
+import { CfnFirewall, CfnFirewallPolicy, CfnRuleGroup } from 'aws-cdk-lib/aws-networkfirewall';
 import { Construct } from 'constructs';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -7,20 +7,122 @@ import * as path from 'path';
 export interface INetworkFirewallDistributedConstructProps {
   readonly vpc: cdk.aws_ec2.IVpc;
   readonly subnetList: Array<cdk.aws_ec2.ISubnet>;
-  readonly rulesFile?: Array<string>;
 }
 
-export class NetworkFirewallDistributedConstruct extends Construct {
+export interface INetworkFirewall{
+  addStatelessRuleGroup(rule:cdk.aws_networkfirewall.CfnRuleGroup):INetworkFirewall;
+  addStatefulRule(rule:cdk.aws_networkfirewall.CfnRuleGroup):INetworkFirewall;
+  addStatefulRules(rules:Array<cdk.aws_networkfirewall.CfnRuleGroup>):INetworkFirewall;
+  buildFirewall():CfnFirewall;
+
+}
+
+export class NetworkFirewallDistributedConstruct extends Construct implements INetworkFirewall {
 
   private vpc: cdk.aws_ec2.IVpc;
-  public readonly firewall: CfnFirewall;
+  private subnetList:Array<CfnFirewall.SubnetMappingProperty> = [];
+  private statefulRuleGroups:Array<cdk.aws_networkfirewall.CfnFirewallPolicy.StatefulRuleGroupReferenceProperty> = [];
+  private statelessRulesGroups:Array<cdk.aws_networkfirewall.CfnRuleGroup> = [];
 
   constructor(scope: Construct, id: string, props: INetworkFirewallDistributedConstructProps) {
     super(scope, id);
-
     this.vpc = props.vpc;
 
-    const allowedports = new cdk.aws_networkfirewall.CfnRuleGroup(this, 'allowed-ports', {
+    props.subnetList.forEach(
+      (subnet)=>{
+        this.subnetList.push({subnetId: subnet.subnetId})
+      }
+    )
+  }
+
+  addStatelessRuleGroup(rule:cdk.aws_networkfirewall.CfnRuleGroup):INetworkFirewall{
+    this.statelessRulesGroups.push(rule);
+    return this;
+  }
+
+  addStatefulRule(rule:cdk.aws_networkfirewall.CfnRuleGroup):INetworkFirewall{
+    this.statefulRuleGroups.push({ resourceArn: rule.ref });
+    return this;
+  }
+
+  addStatefulRules(rules:Array<cdk.aws_networkfirewall.CfnRuleGroup>):INetworkFirewall{
+    rules.forEach(
+      (rule)=>{
+        this.statefulRuleGroups.push({ resourceArn: rule.ref });
+      }
+    )
+    return this;
+  }
+
+  buildFirewall(): CfnFirewall{
+    const statelessRuleGroups = ():Array<CfnFirewallPolicy.StatelessRuleGroupReferenceProperty> => {
+      const groups:Array<CfnFirewallPolicy.StatelessRuleGroupReferenceProperty> = [];
+      this.statelessRulesGroups.forEach(
+        (stateless)=>{
+          groups.push({
+            priority: 100,
+            // ruleDefinition: stateless,
+            resourceArn: stateless.ref,
+          });
+        }
+      )
+      return groups;
+    };
+
+    const fw_policy = new cdk.aws_networkfirewall.CfnFirewallPolicy(this, 'fw_policy', {
+      firewallPolicyName: 'network-firewall-policy',
+      firewallPolicy: {
+        statelessDefaultActions: ['aws:drop'],
+        statelessFragmentDefaultActions: ['aws:drop'],
+        statelessRuleGroupReferences: statelessRuleGroups(),
+        statefulRuleGroupReferences: this.statefulRuleGroups
+      },
+    }); 
+    
+    const firewall = new cdk.aws_networkfirewall.CfnFirewall(this, 'network-firewall', {
+      firewallName: 'network-firewall',
+      firewallPolicyArn: fw_policy.attrFirewallPolicyArn,
+      subnetMappings: this.subnetList,
+      vpcId: this.vpc.vpcId,
+      deleteProtection: false,
+      description: 'AWS Network Firewall to centrally control egress traffic',
+      firewallPolicyChangeProtection: false,
+      subnetChangeProtection: true,
+    });
+
+    return firewall;
+  }
+}
+
+export class NetworkFirewallRulesBuilder{
+  
+  static statefulRulesSourcePropertyFromFile(scope: Construct, filenameList:Array<string>):Array<CfnRuleGroup>{
+
+    const rulesSource:Array<CfnRuleGroup> = [];
+
+    filenameList.forEach(
+      (filename)=>{
+        const contents = fs.readFileSync(filename, { encoding: 'utf8', flag: 'r' });
+        rulesSource.push( 
+          new cdk.aws_networkfirewall.CfnRuleGroup(scope, path.parse(filename.toString()).name,
+          {
+            capacity: 1000,
+            ruleGroupName: path.parse(filename.toString()).name,
+            type: 'STATEFUL',
+            ruleGroup: {
+              rulesSource: {
+                rulesString: contents.split(/\r?\n/).filter((line) => line.match("^([^#])")).join("\n")
+              }
+            },
+          })          
+        )
+      }
+    )
+    return rulesSource;
+  }
+
+  static statelessRulesAllowedPorts(scope: Construct):cdk.aws_networkfirewall.CfnRuleGroup{
+    return new cdk.aws_networkfirewall.CfnRuleGroup(scope, 'allowed-ports', {
       capacity: 1000,
       ruleGroupName: 'allowed-ports',
       type: 'STATELESS',
@@ -83,130 +185,5 @@ export class NetworkFirewallDistributedConstruct extends Construct {
         },        
       },
     });    
-
-    let listdomains: string[] = [
-      '.docker.com',
-      '.aws.amazon.com',
-      '.amazonaws.com',
-      'downloads.nessus.org',
-      'plugins.nessus.org',
-      '.fedoraproject.org',
-      '.duosecurity.com',
-      'crl3.digicert.com',
-      'crl.godaddy.com',
-      'certificate.godaddy.com',
-      'ocsp.godaddy.com',
-      'crl4.digicert.com',
-      '.digicert.com',
-      '.rootca1.amazontrust.com',
-      '.rootg2.amazontrust.com',
-      '.amazontrust.com',
-      '.sca1a.amazontrust.com',
-      '.sca1b.amazontrust.com',
-    ];
-
-    const statefulRuleGroups:Array<cdk.aws_networkfirewall.CfnFirewallPolicy.StatefulRuleGroupReferenceProperty> = [];
-
-    statefulRuleGroups.push({    
-      resourceArn:
-        new cdk.aws_networkfirewall.CfnRuleGroup(this, 'domain-allowlist', {
-          capacity: 1000,
-          ruleGroupName: 'domain-allowlist',
-          type: 'STATEFUL',
-          ruleGroup: {
-            rulesSource: {
-              rulesSourceList: {
-                generatedRulesType: 'ALLOWLIST',
-                targets: listdomains,
-                targetTypes: ['TLS_SNI', 'HTTP_HOST'],
-              },
-            },
-          },
-        }).ref
-      }
-    );
-
-    const getHomeNet = () => this.vpc.vpcCidrBlock;
-
-    const rulesVariable: CfnRuleGroup.RuleVariablesProperty = {
-      ipSets: {
-        HOME_NET: {
-          definition: [getHomeNet()],
-        },
-        EXTERNAL_NET: {
-          definition: ['0.0.0.0/0'],
-        }
-      },      
-    }
-
-    if(props.rulesFile){
-      const rulesFromFile:Array<CfnRuleGroup> = this.buildRulesSourcePropertyFromFile(props.rulesFile, rulesVariable);
-      for(let index=0; index<rulesFromFile.length; index++){
-        statefulRuleGroups.push({    
-          resourceArn:       
-            rulesFromFile[index].ref
-          }
-        )
-      }    
-    };
-
-    const fw_policy = new cdk.aws_networkfirewall.CfnFirewallPolicy(this, 'fw_policy', {
-      firewallPolicyName: 'network-firewall-policy',
-      firewallPolicy: {
-        statelessDefaultActions: ['aws:drop'],
-        statelessFragmentDefaultActions: ['aws:drop'],
-        statelessRuleGroupReferences: [{
-          priority: 100,
-          resourceArn: allowedports.ref,
-        }],
-        statefulRuleGroupReferences: statefulRuleGroups
-      },
-    }); 
-    
-    const subnetList:Array<CfnFirewall.SubnetMappingProperty> = [];
-    props.subnetList.forEach(
-      (subnet)=>{
-        subnetList.push({subnetId: subnet.subnetId})
-      }
-    )
-
-    this.firewall = new cdk.aws_networkfirewall.CfnFirewall(this, 'network-firewall', {
-      firewallName: 'network-firewall',
-      firewallPolicyArn: fw_policy.attrFirewallPolicyArn,
-      subnetMappings: subnetList,
-      vpcId: props.vpc.vpcId,
-      deleteProtection: false,
-      description: 'AWS Network Firewall to centrally control egress traffic',
-      firewallPolicyChangeProtection: false,
-      subnetChangeProtection: true,
-    });
-
   }
-
-  buildRulesSourcePropertyFromFile(filenameList:Array<string>, rulesVariable:CfnRuleGroup.RuleVariablesProperty):Array<CfnRuleGroup>{
-
-    const rulesSource:Array<CfnRuleGroup> = [];
-
-    filenameList.forEach(
-      (filename)=>{
-        const contents = fs.readFileSync(filename, { encoding: 'utf8', flag: 'r' });
-        rulesSource.push( 
-          new cdk.aws_networkfirewall.CfnRuleGroup(this, path.parse(filename.toString()).name,
-          {
-            capacity: 1000,
-            ruleGroupName: path.parse(filename.toString()).name,
-            type: 'STATEFUL',
-            ruleGroup: {
-              ruleVariables: rulesVariable,
-              rulesSource: {
-                rulesString: contents.split(/\r?\n/).filter((line) => line.match("^([^#])")).join("\n")
-              }
-            },
-          })          
-        )
-      }
-    )
-    return rulesSource;
-  }
-
 }

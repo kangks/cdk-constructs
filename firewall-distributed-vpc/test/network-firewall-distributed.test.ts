@@ -2,8 +2,6 @@ import * as cdk from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import * as fw from '../lib/NetworkFirewallDistributedConstruct';
 
-// example test. To run these tests, uncomment this file along with the
-// example resource in lib/index.ts
 test('Firewall Created', () => {
   const app = new cdk.App();
   const stack = new cdk.Stack(app, "TestStack");
@@ -19,9 +17,13 @@ test('Firewall Created', () => {
             cidrBlock: "10.0.0.0/25",
             availabilityZone: vpc.availabilityZones[0]
         })
-    ],
-    rulesFile: ["./test/rules.txt"]
-  });
+    ]
+  })
+  .addStatefulRules(
+    fw.NetworkFirewallRulesBuilder.statefulRulesSourcePropertyFromFile(stack,["./test/rules.txt"])    
+  )
+  .buildFirewall();
+  ;
   // THEN
   const template = Template.fromStack(stack);
 
