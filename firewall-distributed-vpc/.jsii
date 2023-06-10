@@ -3493,7 +3493,7 @@
       "kind": "interface",
       "locationInModule": {
         "filename": "lib/NetworkFirewallDistributedConstruct.ts",
-        "line": 13
+        "line": 12
       },
       "methods": [
         {
@@ -3503,7 +3503,7 @@
           },
           "locationInModule": {
             "filename": "lib/NetworkFirewallDistributedConstruct.ts",
-            "line": 15
+            "line": 14
           },
           "name": "addStatefulRule",
           "parameters": [
@@ -3527,7 +3527,7 @@
           },
           "locationInModule": {
             "filename": "lib/NetworkFirewallDistributedConstruct.ts",
-            "line": 16
+            "line": 15
           },
           "name": "addStatefulRules",
           "parameters": [
@@ -3556,7 +3556,7 @@
           },
           "locationInModule": {
             "filename": "lib/NetworkFirewallDistributedConstruct.ts",
-            "line": 14
+            "line": 13
           },
           "name": "addStatelessRuleGroup",
           "parameters": [
@@ -3580,7 +3580,7 @@
           },
           "locationInModule": {
             "filename": "lib/NetworkFirewallDistributedConstruct.ts",
-            "line": 17
+            "line": 16
           },
           "name": "buildFirewall",
           "returns": {
@@ -3640,27 +3640,6 @@
           "type": {
             "fqn": "aws-cdk-lib.aws_ec2.IVpc"
           }
-        },
-        {
-          "abstract": true,
-          "docs": {
-            "stability": "stable"
-          },
-          "immutable": true,
-          "locationInModule": {
-            "filename": "lib/NetworkFirewallDistributedConstruct.ts",
-            "line": 10
-          },
-          "name": "rulesFile",
-          "optional": true,
-          "type": {
-            "collection": {
-              "elementtype": {
-                "primitive": "string"
-              },
-              "kind": "array"
-            }
-          }
         }
       ],
       "symbolId": "lib/NetworkFirewallDistributedConstruct:INetworkFirewallDistributedConstructProps"
@@ -3678,7 +3657,7 @@
         },
         "locationInModule": {
           "filename": "lib/NetworkFirewallDistributedConstruct.ts",
-          "line": 29
+          "line": 27
         },
         "parameters": [
           {
@@ -3707,7 +3686,7 @@
       "kind": "class",
       "locationInModule": {
         "filename": "lib/NetworkFirewallDistributedConstruct.ts",
-        "line": 21
+        "line": 20
       },
       "methods": [
         {
@@ -3716,7 +3695,7 @@
           },
           "locationInModule": {
             "filename": "lib/NetworkFirewallDistributedConstruct.ts",
-            "line": 45
+            "line": 43
           },
           "name": "addStatefulRule",
           "overrides": "@richkang/cdk-construct-network-firewall-textfile-rules.INetworkFirewall",
@@ -3740,7 +3719,7 @@
           },
           "locationInModule": {
             "filename": "lib/NetworkFirewallDistributedConstruct.ts",
-            "line": 50
+            "line": 48
           },
           "name": "addStatefulRules",
           "overrides": "@richkang/cdk-construct-network-firewall-textfile-rules.INetworkFirewall",
@@ -3769,7 +3748,7 @@
           },
           "locationInModule": {
             "filename": "lib/NetworkFirewallDistributedConstruct.ts",
-            "line": 40
+            "line": 38
           },
           "name": "addStatelessRuleGroup",
           "overrides": "@richkang/cdk-construct-network-firewall-textfile-rules.INetworkFirewall",
@@ -3793,7 +3772,7 @@
           },
           "locationInModule": {
             "filename": "lib/NetworkFirewallDistributedConstruct.ts",
-            "line": 59
+            "line": 57
           },
           "name": "buildFirewall",
           "overrides": "@richkang/cdk-construct-network-firewall-textfile-rules.INetworkFirewall",
@@ -3821,7 +3800,7 @@
       "kind": "class",
       "locationInModule": {
         "filename": "lib/NetworkFirewallDistributedConstruct.ts",
-        "line": 244
+        "line": 97
       },
       "methods": [
         {
@@ -3830,7 +3809,7 @@
           },
           "locationInModule": {
             "filename": "lib/NetworkFirewallDistributedConstruct.ts",
-            "line": 246
+            "line": 99
           },
           "name": "statefulRulesSourcePropertyFromFile",
           "parameters": [
@@ -3870,7 +3849,7 @@
           },
           "locationInModule": {
             "filename": "lib/NetworkFirewallDistributedConstruct.ts",
-            "line": 271
+            "line": 124
           },
           "name": "statelessRulesAllowedPorts",
           "parameters": [
@@ -3893,6 +3872,6 @@
       "symbolId": "lib/NetworkFirewallDistributedConstruct:NetworkFirewallRulesBuilder"
     }
   },
-  "version": "0.1.3",
-  "fingerprint": "wwttMsjKEnRjPhGBqd2BbBm0kMJ54f0wqdvpAS780FI="
+  "version": "0.1.4",
+  "fingerprint": "9+f2+SJDq84V5j8RCIPbm7OOqUnICeRzi5x8g2Yh6Zs="
 }

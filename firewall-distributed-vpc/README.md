@@ -4,24 +4,13 @@ A simple AWS VPC Firewall with one stateless rule and one stateful rule to meet 
 
 Stateful rules group can be further extend with Suricata rules as text file
 
-## Stateless rule group
+## Example stateless rule group
 
-Allows only TCP:80 and TCP:443
+Allows only TCP:80 and TCP:443 by adding `NetworkFirewallRulesBuilder.statelessRulesAllowedPorts(stack)` to the `NetworkFirewallDistributedConstruct()`
 
 ## Stateful rule group
 
-Allows only whitelisted domains:
-
-* .docker.com
-* .aws.amazon.com
-* .amazonaws.com
-* downloads.nessus.org
-* plugins.nessus.org
-* .fedoraproject.org
-* .duosecurity.com
-* crl3.digicert.com
-* crl.godaddy.com
-* certificate.godaddy.com
+Builds from a rule text file using `NetworkFirewallRulesBuilder.statefulRulesSourcePropertyFromFile(stack,["./test/rules.txt"])` to the `NetworkFirewallDistributedConstruct()`
 
 # Example use case
 
@@ -78,8 +67,11 @@ export class NetworkFirewallStack extends cdk.Stack {
     new fwconstruct.FirewallDistributedVpc(this,'fw',{
       vpc: vpc,
       subnetList: subnet,
-      rulesFile: ["./lib/rules.txt"]
     })
+    .addStatefulRules(
+      fw.NetworkFirewallRulesBuilder.statefulRulesSourcePropertyFromFile(stack,["./lib/rules.txt"])    
+    )
+    .buildFirewall();
   
   }
 }
