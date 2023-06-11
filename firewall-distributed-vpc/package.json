@@ -1,6 +1,6 @@
 {
   "name": "@richkang/cdk-construct-network-firewall-textfile-rules",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "main": "lib/NetworkFirewallDistributedConstruct.js",
   "types": "lib/NetworkFirewallDistributedConstruct.d.ts",
   "scripts": {
@@ -27,7 +27,8 @@
   },
   "keywords": [
     "awscdk",
-    "cdk"
+    "cdk",
+    "networkfirewall"
   ],
   "author": {
     "name": "Richard Kang",
